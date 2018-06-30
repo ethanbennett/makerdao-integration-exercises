@@ -12,8 +12,9 @@ const log = {
   title: debug("leverage:header")
 };
 
-// connect to kovan using infura
-const maker = new Maker("kovan", { privateKey: process.env.KOVAN_PRIVATE_KEY });
+// const maker =
+// Create a new Maker instance that connects to Infura. Don't forget
+// to include your private key.
 
 module.exports = async ( iterations, priceFloor, principal ) => {
   invariant(
@@ -51,22 +52,30 @@ module.exports = async ( iterations, priceFloor, principal ) => {
     `Price floor must be below the current oracle price`
   );
 
-  const cdp = await maker.openCdp();
-  const id = await cdp.getCdpId();
+  const cdp = // Open a new CDP here.
+
+
+  const id = // Get the new CDP's ID here.
+
+
   log.action(`opened cdp ${id}`);
   console.log(`opened cdp ${id}`);
 
   // calculate a collateralization ratio that will achieve the given price floor
   const collatRatio = (priceEth * liquidationRatio) / priceFloor;
 
-  // lock up all of our principal
-  await cdp.lockEth(principal.toString());
+
+  // Lock up all of our principal here.
+  
+
   log.action(`locked ${principal} ETH`);
   console.log(`locked ${principal} ETH`);
 
-  //get initial peth collateral
-  const initialPethCollateral = await cdp.getCollateralValueInPeth();
+
+  
+  const initialPethCollateral = // Query the CDP for the amount of initial peth collateral here.
   console.log(` ${principal} ETH worth ${initialPethCollateral} PETH`);
+
 
   // calculate how much Dai we need to draw in order
   // to achieve the desired collateralization ratio
@@ -103,8 +112,8 @@ module.exports = async ( iterations, priceFloor, principal ) => {
 
   // get the final state of our CDP
   const [pethCollateral, debt] = await Promise.all([
-    cdp.getCollateralValueInPeth(),
-    cdp.getDebtValueInDai()
+    // 1. query the CDP for the amount of PETH locked as collateral here,
+    // 2. query the CDP for the amount of debt withdrawn as Dai here
   ]);
 
   const cdpState = {
